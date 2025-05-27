@@ -55,6 +55,13 @@ vector<int> selectionSort(vector<int> data, int* comps, int* switches){
     return sortedData;
 }
 
+vector<int> bubbleSort(vector<int> data, int* comps, int* switches){
+    vector<int> sortedData = data;
+    bool switched;
+
+    return sortedData;
+}
+
 int main(){
     cout<<"---- QUANTIDADE PEQUENA DE DADOS (10.000 números) -----\n";
     vector<int> data = vectorizeData("dados/pequeno.bin");

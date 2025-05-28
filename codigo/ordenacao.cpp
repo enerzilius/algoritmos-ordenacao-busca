@@ -34,22 +34,21 @@ vector<int> vectorizeData(string path){
 vector<int> selectionSort(vector<int> data, int* comps, int* switches){
     vector<int> sortedData = data;
     int iMin = 0;
-    int index = 0;
+    int i = 0;
     int aux = 0;
 
-    for (int i = index; i < sortedData.size(); i++)
+    for (int i = i; i < sortedData.size(); i++)
     {
         iMin = i;
-        for (int j = index; j < sortedData.size(); j++)
+        for (int j = i; j < sortedData.size(); j++)
         {
             if(sortedData[j] < sortedData[iMin]){
                 iMin = j;
                 *comps += 1;
             } 
         }
-        swap(sortedData[index], sortedData[iMin]);
+        swap(sortedData[i], sortedData[iMin]);
         *switches += 1;
-        index++;
     }
 
     return sortedData;
@@ -58,6 +57,22 @@ vector<int> selectionSort(vector<int> data, int* comps, int* switches){
 vector<int> bubbleSort(vector<int> data, int* comps, int* switches){
     vector<int> sortedData = data;
     bool switched;
+
+    for(int i = 0; i < data.size()-1; i++){
+        switched = false;
+
+        for (int j = i; j < sortedData.size()-i-1; j++)
+        {   
+            if(sortedData[j] > sortedData[j+1]){
+                switch(data[j], data[j+1]);
+                *comps += 1;
+                *switches += 1;
+                switched = true;
+            } 
+        }
+
+        if(!switched) break;
+    }
 
     return sortedData;
 }
@@ -74,6 +89,15 @@ int main(){
     std::chrono::duration<double> tempo = (t2 - t1);
 
     cout<<selectionSorted.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+    
+    t1 = high_resolution_clock::now();
+    vector<int> bubbleSorted = bubbleSort(data,&comps,&switches);
+    t2 = high_resolution_clock::now();
+
+    std::chrono::duration<double> tempo = (t2 - t1);
+    
+    cout<<bubbleSorted.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+
 
     comps = 0;
     switches = 0;

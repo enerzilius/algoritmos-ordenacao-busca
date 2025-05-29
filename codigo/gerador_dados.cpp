@@ -7,6 +7,22 @@
 using namespace std;
 using namespace std::chrono;
 
+void createRandomTeste(){
+    string path = "dados/teste.bin"; 
+
+    fstream file;
+    file.open(path, ios::binary | ios::out);
+    if(!file) return;
+
+    for (int i = 0; i < 100; i++)
+    {
+        int random = rand() % 100;
+        file.write(reinterpret_cast<char*>(&random), sizeof(int));
+    }
+    file.close();
+
+}
+
 void createOrderedIntDataFile(int len){
     string path = "dados/sorted_"+to_string(len)+".bin"; 
 
@@ -42,14 +58,16 @@ void createRandomIntDataFile(int len){
 }
 
 int main(){
-    int len = pow(10, 4);
-    time_point<system_clock> t1 = high_resolution_clock::now();
-    createRandomIntDataFile(len);
-    time_point<system_clock> t2 = high_resolution_clock::now();
+    // int len = pow(10, 4);
+    // time_point<system_clock> t1 = high_resolution_clock::now();
+    // createRandomIntDataFile(len);
+    // time_point<system_clock> t2 = high_resolution_clock::now();
 
-    duration<double, std::milli> tempo = (t2 - t1)/1000;
+    // duration<double, std::milli> tempo = (t2 - t1)/1000;
 
-    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+    // cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+
+    createRandomTeste(100);
 
 
 

@@ -42,9 +42,9 @@ vector<int> selectionSort(vector<int> data, int* comps, int* switches){
         iMin = i;
         for (int j = i; j < sortedData.size(); j++)
         {
+            *comps += 1;
             if(sortedData[j] < sortedData[iMin]){
                 iMin = j;
-                *comps += 1;
             } 
         }
         swap(sortedData[i], sortedData[iMin]);
@@ -58,14 +58,14 @@ vector<int> bubbleSort(vector<int> data, int* comps, int* switches){
     vector<int> sortedData = data;
     bool switched;
 
-    for(int i = 0; i < data.size()-1; i++){
+    for(int i = 0; i < sortedData.size(); i++){
         switched = false;
 
-        for (int j = i; j < sortedData.size()-i-1; j++)
+        for (int j = 0; j < sortedData.size()-i; j++)
         {   
+            *comps += 1;
             if(sortedData[j] > sortedData[j+1]){
-                switch(data[j], data[j+1]);
-                *comps += 1;
+                swap(sortedData[j], sortedData[j+1]);
                 *switches += 1;
                 switched = true;
             } 
@@ -77,8 +77,30 @@ vector<int> bubbleSort(vector<int> data, int* comps, int* switches){
     return sortedData;
 }
 
+vector<int> insertionSort(vector<int> data, int* comps, int* switches){
+    vector<int> sortedData = data;
+    int index = 0;
+    int j = 0;
+
+    for (int i = 0; i < sortedData.size(); i++){
+        index = i;
+        int n = sortedData[i];
+        j = i-1;
+        while(j >= 0 && sortedData[j] > n){
+            *comps += 1;
+            *switches += 1;
+            sortedData[j+1] = sortedData[j];
+            index = j;
+            j--;
+        }
+        sortedData[index] = n;
+    }
+    return sortedData;
+}
+
 int main(){
     cout<<"---- QUANTIDADE PEQUENA DE DADOS (10.000 números) -----\n";
+    cout<<"-- Casos Normais --\n";
     vector<int> data = vectorizeData("dados/pequeno.bin");
     int comps = 0;
     int switches = 0;
@@ -86,21 +108,33 @@ int main(){
     vector<int> selectionSorted = selectionSort(data,&comps,&switches);
     time_point<system_clock> t2 = high_resolution_clock::now();
 
-    std::chrono::duration<double> tempo = (t2 - t1);
+    std::chrono::duration<double> tempo = t2 - t1;
 
+    
     cout<<selectionSorted.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
     
+    comps = 0;
+    switches = 0;
+
     t1 = high_resolution_clock::now();
     vector<int> bubbleSorted = bubbleSort(data,&comps,&switches);
     t2 = high_resolution_clock::now();
 
-    std::chrono::duration<double> tempo = (t2 - t1);
+    tempo = t2 - t1;
+
     
     cout<<bubbleSorted.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
 
-
     comps = 0;
     switches = 0;
+
+    t1 = high_resolution_clock::now();
+    vector<int> insertionSorted = insertionSort(data,&comps,&switches);
+    t2 = high_resolution_clock::now();
+
+    tempo = t2 - t1;
+
+    cout<<insertionSorted.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
 
     return 0;
 }

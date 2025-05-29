@@ -63,6 +63,7 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "format": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "xutility": "cpp"
     },
 }

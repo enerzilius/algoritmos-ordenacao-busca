@@ -38,11 +38,16 @@ void createOrderedIntDataFile(int len){
 }
 
 void createRandomIntDataFile(int len){
-    string nome = "";
+    string name = "";
     if(len < 100000){
-        nome = "pequeno";
+        name = "pequeno";
+    }else if(len >= 100000 && len < 300000){
+        name = "medio";
+    }else{
+        name = "grande";
     }
-    string path = "dados/"+nome+".bin"; 
+
+    string path = "dados/"+name+".bin"; 
 
     fstream file;
     file.open(path, ios::binary | ios::out);
@@ -58,12 +63,33 @@ void createRandomIntDataFile(int len){
 }
 
 int main(){
-    int len = pow(10, 4)*1.7;
+
+    int len = pow(10, 4)*1.8;
     time_point<system_clock> t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);
     time_point<system_clock> t2 = high_resolution_clock::now();
 
-    duration<double, std::milli> tempo = (t2 - t1)/1000;
+    duration<double> tempo = (t2 - t1);
+
+    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+
+    len = pow(10, 5);
+
+    t1 = high_resolution_clock::now();
+    createRandomIntDataFile(len);
+    t2 = high_resolution_clock::now();
+
+    tempo = (t2 - t1);
+
+    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+
+    len = len * 6;
+
+    t1 = high_resolution_clock::now();
+    createRandomIntDataFile(len);
+    t2 = high_resolution_clock::now();
+
+    tempo = (t2 - t1);
 
     cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 

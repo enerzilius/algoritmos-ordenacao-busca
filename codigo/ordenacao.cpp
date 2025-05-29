@@ -7,6 +7,19 @@
 using namespace std;
 using namespace std::chrono;
 
+void createBinaryFileFromVector(vector<int> sorted){
+    fstream file;
+    file.open("dados/resultado.bin", ios::binary | ios::out);
+    if(!file) {
+        cout<<"Falha na criação de arquivo com os resultados.\n";
+        return;
+    }
+
+    // file.write(reinterpret_cast<char*>(sorted.size()), sizeof(sorted.size()));
+    file.write(reinterpret_cast<char*>(sorted.data()), sorted.size()*sizeof(int));
+    file.close();
+}
+
 vector<int> vectorizeData(string path){
     vector<int> empty;
     fstream file;
@@ -135,6 +148,48 @@ int main(){
     tempo = t2 - t1;
 
     cout<<insertionSorted.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+
+    cout<<"-- Melhores casos --\n";
+    createBinaryFileFromVector(insertionSorted);
+    vector<int> melhorCaso = vectorizeData("dados/resultado.bin");
+
+    comps = 0;
+    switches = 0;
+    t1 = high_resolution_clock::now();
+    vector<int> selectionSortedBC = selectionSort(melhorCaso,&comps,&switches);
+    t2 = high_resolution_clock::now();
+
+    tempo = t2 - t1;
+
+    
+    cout<<selectionSortedBC.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+    
+    comps = 0;
+    switches = 0;
+
+    t1 = high_resolution_clock::now();
+    vector<int> bubbleSortedBC = bubbleSort(melhorCaso,&comps,&switches);
+    t2 = high_resolution_clock::now();
+
+    tempo = t2 - t1;
+
+    
+    cout<<bubbleSortedBC.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+
+    comps = 0;
+    switches = 0;
+
+    t1 = high_resolution_clock::now();
+    vector<int> insertionSortedBC = insertionSort(melhorCaso,&comps,&switches);
+    t2 = high_resolution_clock::now();
+
+    tempo = t2 - t1;
+
+    cout<<insertionSortedBC.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+
+
+
+
 
     return 0;
 }

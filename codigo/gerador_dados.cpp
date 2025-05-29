@@ -39,7 +39,7 @@ void createOrderedIntDataFile(int len){
 
 void createRandomIntDataFile(int len){
     string nome = "";
-    if(len == 10000){
+    if(len < 100000){
         nome = "pequeno";
     }
     string path = "dados/"+nome+".bin"; 
@@ -58,16 +58,16 @@ void createRandomIntDataFile(int len){
 }
 
 int main(){
-    // int len = pow(10, 4);
-    // time_point<system_clock> t1 = high_resolution_clock::now();
-    // createRandomIntDataFile(len);
-    // time_point<system_clock> t2 = high_resolution_clock::now();
+    int len = pow(10, 4)*1.7;
+    time_point<system_clock> t1 = high_resolution_clock::now();
+    createRandomIntDataFile(len);
+    time_point<system_clock> t2 = high_resolution_clock::now();
 
-    // duration<double, std::milli> tempo = (t2 - t1)/1000;
+    duration<double, std::milli> tempo = (t2 - t1)/1000;
 
-    // cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    createRandomTeste(100);
+    // createRandomTeste();
 
 
 

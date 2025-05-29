@@ -64,7 +64,7 @@ void createRandomIntDataFile(int len){
 
 int main(){
 
-    int len = pow(10, 4)*1.8;
+    int len = pow(10, 4)*1.6;
     time_point<system_clock> t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);
     time_point<system_clock> t2 = high_resolution_clock::now();

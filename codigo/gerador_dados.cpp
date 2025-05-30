@@ -39,9 +39,9 @@ void createOrderedIntDataFile(int len){
 
 void createRandomIntDataFile(int len){
     string name = "";
-    if(len < 100000){
+    if(len < 50000){
         name = "pequeno";
-    }else if(len >= 100000 && len < 300000){
+    }else if(len >= 50000 && len < 200000){
         name = "medio";
     }else{
         name = "grande";
@@ -64,7 +64,7 @@ void createRandomIntDataFile(int len){
 
 int main(){
 
-    int len = pow(10, 4)*1.6;
+    int len = pow(10, 4)*1.4;
     time_point<system_clock> t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);
     time_point<system_clock> t2 = high_resolution_clock::now();
@@ -73,7 +73,7 @@ int main(){
 
     cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    len = pow(10, 5);
+    len = pow(10, 4)*8;
 
     t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);
@@ -83,7 +83,7 @@ int main(){
 
     cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    len = len * 6;
+    len = pow(10, 5)*1.5;
 
     t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);

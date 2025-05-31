@@ -43,38 +43,33 @@ int linear(vector<int> data, int target, unsigned long *comps){
 }
 
 int binary(vector<int> data, int target, unsigned long *comps){
-    int high = data.size();
+    int high = data.size()-1;
     int low = 1;
 
     *comps += 1;
     while(low <= high){
-        int mid = (int)((low + high) / 2);
+        int mid = (low+(high - low)/ 2);
 
         *comps += 1;
-        if(data[mid] = target) return mid;
+        if(data[mid] == target) return mid;
         *comps += 1;
-        if(data[mid] < target) high = mid + 1;
-        else low = mid - 1;
+        if(data[mid] < target) low = mid + 1;
+        else high = mid - 1;
     }
 
     return -1;
 }
 
-void printSearchAnalysis(int searchType, int size){
+void printSearchAnalysis(vector<int> data, int searchType, int size, int randomValue){
     string sizes[] = {"Pequeno", "Medio", "Grande"};
     string types[] = {"Linear Search", "Binary Search"};
 
     unsigned long comps = 0;
 
-    vector<int> data = vectorizeData("dados/result"+sizes[size-1]+".bin");
-    cout<<data.size();
-    cout<<"dados/result"+sizes[size-1]+".bin\n";
     int index = 0;
 
     time_point<system_clock> t1;
     time_point<system_clock> t2;
-
-    int randomValue = rand() % data.size();
 
     switch(searchType){
         case 1:
@@ -94,20 +89,23 @@ void printSearchAnalysis(int searchType, int size){
 }
 
 int main(){
-    cout<<"---- QUANTIDADE PEQUENA DE DADOS (15.000 números) -----\n";
-    cout<<"-- Casos Normais --\n";
-    printSearchAnalysis(1, 1);
-    printSearchAnalysis(2, 1);
+    cout<<"---- QUANTIDADE PEQUENA DE DADOS (14.000 números) -----\n";
+    vector<int> data = vectorizeData("dados/resultPequeno.bin");
+    int randomValue = rand() % data.size();
+    printSearchAnalysis(data, 1, 1, randomValue);
+    printSearchAnalysis(data, 2, 1, randomValue);
 
-    cout<<"---- QUANTIDADE MÉDIA DE DADOS (80.000 números) -----\n";
-    cout<<"-- Casos Normais --\n";
-    printSearchAnalysis(1, 2);
-    printSearchAnalysis(2, 2);
+    cout<<"\n---- QUANTIDADE MÉDIA DE DADOS (80.000 números) -----\n";
+    data = vectorizeData("dados/resultMedio.bin");
+    randomValue = rand() % data.size();
+    printSearchAnalysis(data, 1, 2, randomValue);
+    printSearchAnalysis(data, 2, 2, randomValue);
     
-    cout<<"---- QUANTIDADE GRANDE DE DADOS (180.000 números) -----\n";
-    cout<<"-- Casos Normais --\n";
-    printSearchAnalysis(1, 3);
-    printSearchAnalysis(2, 3);
+    cout<<"\n---- QUANTIDADE GRANDE DE DADOS (190.000 números) -----\n";
+    data = vectorizeData("dados/resultGrande.bin");
+    randomValue = rand() % data.size();
+    printSearchAnalysis(data, 1, 3, randomValue);
+    printSearchAnalysis(data, 2, 3, randomValue);
     
     return 0;
 }

@@ -36,6 +36,7 @@
             ```
 - **Resultado:**
     - O resultado dessa execução deve ser a quantidade de números ordenados, o método de ordenação utilizado, o tempo decorrido (em segundos), o número de comparações e o número de trocas de posição:
+    
     ![alt text](outputGerador.png)
 
     - Os arquivos .bin com a ordenação crescente dos arquivos gerados anteriormente também estarão localizados no diretório "dados":

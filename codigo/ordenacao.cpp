@@ -74,6 +74,27 @@ vector<int> selectionSort(vector<int> data, unsigned long* comps, unsigned long*
 
     return sortedData;
 }
+vector<int> optimizedSelectionSort(vector<int> data, unsigned long* comps, unsigned long* switches){
+    vector<int> sortedData = data;
+    int iMin = 0;
+
+    for (int i = 0; i < sortedData.size(); i++)
+    {
+        iMin = i;
+        *comps += 1;
+        if(sortedData[i] <= sortedData[i+1]) continue;
+        for (int j = i; j < sortedData.size(); j++)
+        {
+            *comps += 1;
+            if(sortedData[j] < sortedData[iMin]){
+                iMin = j;
+            } 
+        }
+        swap(sortedData[i], sortedData[iMin]);
+        *switches += 1;
+    }
+    return sortedData;
+}
 
 vector<int> bubbleSort(vector<int> data, unsigned long* comps, unsigned long* switches){
     vector<int> sortedData = data;
@@ -82,6 +103,29 @@ vector<int> bubbleSort(vector<int> data, unsigned long* comps, unsigned long* sw
     for(int i = 0; i < sortedData.size(); i++){
         switched = false;
 
+        for (int j = 0; j < sortedData.size()-i; j++)
+        {   
+            *comps += 1;
+            if(sortedData[j] > sortedData[j+1]){
+                swap(sortedData[j], sortedData[j+1]);
+                *switches += 1;
+                switched = true;
+            } 
+        }
+
+        if(!switched) break;
+    }
+
+    return sortedData;
+}
+vector<int> optimizedBubbleSort(vector<int> data, unsigned long* comps, unsigned long* switches){
+    vector<int> sortedData = data;
+    bool switched;
+
+    for(int i = 0; i < sortedData.size(); i++){
+        switched = false;
+        *comps += 1;
+        if(sortedData[i] <= sortedData[i+1]) continue;
         for (int j = 0; j < sortedData.size()-i; j++)
         {   
             *comps += 1;
@@ -120,234 +164,96 @@ vector<int> insertionSort(vector<int> data, unsigned long* comps, unsigned long*
     return sortedData;
 }
 
-int main(){
-    cout<<"---- QUANTIDADE PEQUENA DE DADOS (15.000 números) -----\n";
-    cout<<"-- Casos Normais --\n";
-    vector<int> dataP = vectorizeData("dados/pequeno.bin");
+void printSortAnalysis(int sorting, int size, bool bestCase){
+    string sizes[] = {"pequeno", "medio", "grande"};
+    string algs[] = {"Bubble Sort", "Selection Sort", "Insertion Sort"};
+
     unsigned long comps = 0;
     unsigned long switches = 0;
 
-    time_point<system_clock> t1 = high_resolution_clock::now();
-    vector<int> bubbleSortedP = bubbleSort(dataP,&comps,&switches);
-    time_point<system_clock> t2 = high_resolution_clock::now();
+    vector<int> data = vectorizeData("dados/"+sizes[size-1]+".bin");
+    vector<int> sorted;
+    if(bestCase){
+        sorted = insertionSort(data,&comps,&switches);
+    }
+
+    time_point<system_clock> t1;
+    time_point<system_clock> t2;
+
+    switch (sorting)
+    {
+    case 1:
+        if(bestCase){
+            t1 = high_resolution_clock::now();
+            data = optimizedBubbleSort(sorted,&comps,&switches);
+            t2 = high_resolution_clock::now();
+        } else {
+            t1 = high_resolution_clock::now();
+            data = bubbleSort(data,&comps,&switches);
+            t2 = high_resolution_clock::now();
+        }
+        break;
+    case 2:
+        if(bestCase){
+            t1 = high_resolution_clock::now();
+            data = optimizedSelectionSort(sorted,&comps,&switches);
+            t2 = high_resolution_clock::now();
+        } else {
+            t1 = high_resolution_clock::now();
+            data = selectionSort(data,&comps,&switches);
+            t2 = high_resolution_clock::now();
+        }
+        break;
+    case 3:
+        if(bestCase){
+            t1 = high_resolution_clock::now();
+            data = insertionSort(sorted,&comps,&switches);
+            t2 = high_resolution_clock::now();
+        } else {
+            t1 = high_resolution_clock::now();
+            data = insertionSort(data,&comps,&switches);
+            t2 = high_resolution_clock::now();
+        }
+        break;
+    default:
+        break;
+    }
 
     std::chrono::duration<double> tempo = t2 - t1;
 
-    cout<<bubbleSortedP.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-    
-    comps = 0;
-    switches = 0;
+    cout<<data.size()<<" números ordenados com "+algs[sorting-1]+" em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+}
 
-    t1 = high_resolution_clock::now();
-    vector<int> selectionSortedP = selectionSort(dataP,&comps,&switches);
-    t2 = high_resolution_clock::now();
-    
-    cout<<selectionSortedP.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-    
-    
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> insertionSortedP = insertionSort(dataP,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    createBinaryFileFromVector(insertionSortedP);
-
-    cout<<insertionSortedP.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    cout<<"-- Melhores casos --\n";
-    vector<int> melhorCasoP = insertionSortedP;
-
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> bubbleSortedPBC = bubbleSort(melhorCasoP,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    
-    cout<<bubbleSortedPBC.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    comps = 0;
-    switches = 0;
-    t1 = high_resolution_clock::now();
-    vector<int> selectionSortedPBC = selectionSort(melhorCasoP,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    
-    cout<<selectionSortedPBC.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-    
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> insertionSortedPBC = insertionSort(melhorCasoP,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    cout<<insertionSortedPBC.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    cout<<"---- QUANTIDADE MÉDIA DE DADOS (50.000 números) -----\n";
+int main(){
+    cout<<"---- QUANTIDADE PEQUENA DE DADOS (15.000 números) -----\n";
     cout<<"-- Casos Normais --\n";
-    vector<int> dataM = vectorizeData("dados/medio.bin");
-
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> bubbleSortedM = bubbleSort(dataM,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    
-    cout<<bubbleSortedM.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-
-    comps = 0;
-    switches = 0;
-    t1 = high_resolution_clock::now();
-    vector<int> selectionSortedM = selectionSort(dataM,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-    
-    cout<<selectionSortedM.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-    
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> insertionSortedM = insertionSort(dataM,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    cout<<insertionSortedM.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    createBinaryFileFromVector(insertionSortedM);
-
+    printSortAnalysis(1, 1, false);
+    printSortAnalysis(2, 1, false);
+    printSortAnalysis(3, 1, false);
     cout<<"-- Melhores casos --\n";
-    vector<int> melhorCasoM = insertionSortedM;
-
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> bubbleSortedMBC = bubbleSort(melhorCasoM,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    cout<<bubbleSortedMBC.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-
-    comps = 0;
-    switches = 0;
-    t1 = high_resolution_clock::now();
-    vector<int> selectionSortedMBC = selectionSort(melhorCasoM,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
+    printSortAnalysis(1, 1, true);
+    printSortAnalysis(2, 1, true);
+    printSortAnalysis(3, 1, true);
     
-    cout<<selectionSortedMBC.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-    
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> insertionSortedMBC = insertionSort(melhorCasoM,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    cout<<insertionSortedMBC.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    cout<<"---- QUANTIDADE GRANDE DE DADOS (100.000 números) -----\n";
+    cout<<"---- QUANTIDADE MÉDIA DE DADOS (80.000 números) -----\n";
     cout<<"-- Casos Normais --\n";
-    vector<int> dataG = vectorizeData("dados/grande.bin");
-
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> bubbleSortedG = bubbleSort(dataG,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    
-    cout<<bubbleSortedG.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    comps = 0;
-    switches = 0;
-    t1 = high_resolution_clock::now();
-    vector<int> selectionSortedG = selectionSort(dataG,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-    
-    cout<<selectionSortedG.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-    
-    
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> insertionSortedG = insertionSort(dataG,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    cout<<insertionSortedG.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    createBinaryFileFromVector(insertionSortedM);
-
+    printSortAnalysis(1, 2, false);
+    printSortAnalysis(2, 2, false);
+    printSortAnalysis(3, 2, false);
     cout<<"-- Melhores casos --\n";
-    vector<int> melhorCasoG = insertionSortedG;
-
-    comps = 0;
-    switches = 0;
-    t1 = high_resolution_clock::now();
-    vector<int> selectionSortedGBC = selectionSort(melhorCasoG,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
+    printSortAnalysis(1, 2, true);
+    printSortAnalysis(2, 2, true);
+    printSortAnalysis(3, 2, true);
     
-    cout<<selectionSortedGBC.size()<<" números ordenados com Selection Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
+    cout<<"---- QUANTIDADE GRANDE DE DADOS (180.000 números) -----\n";
+    cout<<"-- Casos Normais --\n";
+    printSortAnalysis(1, 3, false);
+    printSortAnalysis(2, 3, false);
+    printSortAnalysis(3, 3, false);
+    cout<<"-- Melhores casos --\n";
+    printSortAnalysis(1, 3, true);
+    printSortAnalysis(2, 3, true);
+    printSortAnalysis(3, 3, true);
     
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> bubbleSortedGBC = bubbleSort(melhorCasoG,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    
-    cout<<bubbleSortedGBC.size()<<" números ordenados com Bubble Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
-    comps = 0;
-    switches = 0;
-
-    t1 = high_resolution_clock::now();
-    vector<int> insertionSortedGBC = insertionSort(melhorCasoG,&comps,&switches);
-    t2 = high_resolution_clock::now();
-
-    tempo = t2 - t1;
-
-    cout<<insertionSortedGBC.size()<<" números ordenados com Insertion Sort em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
-
     return 0;
 }

@@ -33,6 +33,10 @@ int binary(vector<int> data, int target, unsigned long *comps){
     return -1;
 }
 
+void analyzeSearch(){
+    
+}
+
 int main(){
     unsigned long comps = 0;
 

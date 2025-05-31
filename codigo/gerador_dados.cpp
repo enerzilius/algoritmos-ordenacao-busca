@@ -41,7 +41,7 @@ void createRandomIntDataFile(int len){
     string name = "";
     if(len < 50000){
         name = "pequeno";
-    }else if(len >= 50000 && len < 200000){
+    }else if(len >= 50000 && len < 150000){
         name = "medio";
     }else{
         name = "grande";
@@ -83,7 +83,7 @@ int main(){
 
     cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    len = pow(10, 5)*1.5;
+    len = pow(10, 5)*1.8;
 
     t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);
@@ -94,8 +94,6 @@ int main(){
     cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
     // createRandomTeste();
-
-
 
     return 0;
 }

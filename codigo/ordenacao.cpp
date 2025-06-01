@@ -170,7 +170,7 @@ void printAnalysis(vector<int> data, std::chrono::duration<double> tempo, unsign
     cout<<data.size()<<" números ordenados com "<<algs[sorting-1]<<obs<<" em "<<tempo.count()<<"s com "<<comps<<" comparações e "<<switches<<" trocas\n";
 }
 
-vector<int> createSortAnalysis(int sorting, int size, bool otimizado, vector<int> data){
+vector<int> createSortAnalysis(int sorting, bool otimizado, vector<int> data){
     unsigned long comps = 0;
     unsigned long switches = 0;
 
@@ -213,50 +213,50 @@ int main(){
     cout<<"-- Casos Normais --\n";
     vector<int> data = vectorizeData("dados/pequeno.bin");
     vector<int> sorted;
-    sorted = createSortAnalysis(1, 1, false, data);
-    sorted = createSortAnalysis(1, 1, true, data);
-    sorted = createSortAnalysis(2, 1, false, data);
-    sorted = createSortAnalysis(2, 1, true, data);
-    sorted = createSortAnalysis(3, 1, false, data);
+    sorted = createSortAnalysis(1, false, data);
+    sorted = createSortAnalysis(1, true, data);
+    sorted = createSortAnalysis(2, false, data);
+    sorted = createSortAnalysis(2, true, data);
+    sorted = createSortAnalysis(3, false, data);
     createBinaryFileFromVector(sorted);
     cout<<"-- Melhores casos --\n";
-    sorted = createSortAnalysis(1, 1, false, sorted);
-    sorted = createSortAnalysis(1, 1, true, sorted);
-    sorted = createSortAnalysis(2, 1, false, sorted);
-    sorted = createSortAnalysis(2, 1, true, sorted);
-    sorted = createSortAnalysis(3, 1, false, sorted);
+    sorted = createSortAnalysis(1, false, sorted);
+    sorted = createSortAnalysis(1, true, sorted);
+    sorted = createSortAnalysis(2, false, sorted);
+    sorted = createSortAnalysis(2, true, sorted);
+    sorted = createSortAnalysis(3, false, sorted);
     
     cout<<"---- QUANTIDADE MÉDIA DE DADOS (80.000 números) -----\n";
     cout<<"-- Casos Normais --\n";
     data = vectorizeData("dados/medio.bin");
-    sorted = createSortAnalysis(1, 2, false,  data);
-    sorted = createSortAnalysis(1, 2, true,  data);
-    sorted = createSortAnalysis(2, 2, false,  data);
-    sorted = createSortAnalysis(2, 2, true,  data);
-    sorted = createSortAnalysis(3, 2, false,  data);
+    sorted = createSortAnalysis(1, false,  data);
+    sorted = createSortAnalysis(1, true,  data);
+    sorted = createSortAnalysis(2, false,  data);
+    sorted = createSortAnalysis(2, true,  data);
+    sorted = createSortAnalysis(3, false,  data);
     createBinaryFileFromVector(sorted);
     cout<<"-- Melhores casos --\n";
-    sorted = createSortAnalysis(1, 2, false, sorted);
-    sorted = createSortAnalysis(1, 2, true, sorted);
-    sorted = createSortAnalysis(2, 2, false, sorted);
-    sorted = createSortAnalysis(2, 2, true, sorted);
-    sorted = createSortAnalysis(3, 2, false, sorted);
+    sorted = createSortAnalysis(1, false, sorted);
+    sorted = createSortAnalysis(1, true, sorted);
+    sorted = createSortAnalysis(2, false, sorted);
+    sorted = createSortAnalysis(2, true, sorted);
+    sorted = createSortAnalysis(3, false, sorted);
     
     cout<<"---- QUANTIDADE GRANDE DE DADOS (180.000 números) -----\n";
     data = vectorizeData("dados/grande.bin");
     cout<<"-- Casos Normais --\n";
-    sorted = createSortAnalysis(1, 3, false, data);
-    sorted = createSortAnalysis(1, 3, true, data);
-    sorted = createSortAnalysis(2, 3, false, data);
-    sorted = createSortAnalysis(2, 3, true, data);
-    sorted = createSortAnalysis(3, 3, false, data);
+    sorted = createSortAnalysis(1, false, data);
+    sorted = createSortAnalysis(1, true, data);
+    sorted = createSortAnalysis(2, false, data);
+    sorted = createSortAnalysis(2, true, data);
+    sorted = createSortAnalysis(3, false, data);
     createBinaryFileFromVector(sorted);
     cout<<"-- Melhores casos --\n";
-    sorted = createSortAnalysis(1, 3, false, sorted);
-    sorted = createSortAnalysis(1, 3, true, sorted);
-    sorted = createSortAnalysis(2, 3, false, sorted);
-    sorted = createSortAnalysis(2, 3, true, sorted);
-    sorted = createSortAnalysis(3, 3, false, sorted);
+    sorted = createSortAnalysis(1, false, sorted);
+    sorted = createSortAnalysis(1, true, sorted);
+    sorted = createSortAnalysis(2, false, sorted);
+    sorted = createSortAnalysis(2, true, sorted);
+    sorted = createSortAnalysis(3, false, sorted);
     
     return 0;
 }

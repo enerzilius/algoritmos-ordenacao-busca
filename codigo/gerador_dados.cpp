@@ -83,7 +83,7 @@ int main(){
 
     cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    len = pow(10, 5)*1.9;
+    len = pow(10, 5)*1.8;
 
     t1 = high_resolution_clock::now();
     createRandomIntDataFile(len);

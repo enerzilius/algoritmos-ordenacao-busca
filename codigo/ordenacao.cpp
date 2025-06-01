@@ -242,7 +242,7 @@ int main(){
     sorted = createSortAnalysis(2, 2, true, sorted);
     sorted = createSortAnalysis(3, 2, false, sorted);
     
-    cout<<"---- QUANTIDADE GRANDE DE DADOS (190.000 números) -----\n";
+    cout<<"---- QUANTIDADE GRANDE DE DADOS (180.000 números) -----\n";
     data = vectorizeData("dados/grande.bin");
     cout<<"-- Casos Normais --\n";
     sorted = createSortAnalysis(1, 3, false, data);

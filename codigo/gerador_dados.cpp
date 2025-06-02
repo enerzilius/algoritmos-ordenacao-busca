@@ -64,36 +64,34 @@ void createRandomIntDataFile(int len){
 
 int main(){
 
-    // int len = pow(10, 4)*1.4;
-    // time_point<system_clock> t1 = high_resolution_clock::now();
-    // createRandomIntDataFile(len);
-    // time_point<system_clock> t2 = high_resolution_clock::now();
+    int len = pow(10, 4)*1.4;
+    time_point<system_clock> t1 = high_resolution_clock::now();
+    createRandomIntDataFile(len);
+    time_point<system_clock> t2 = high_resolution_clock::now();
 
-    // duration<double> tempo = (t2 - t1);
+    duration<double> tempo = (t2 - t1);
 
-    // cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    // len = pow(10, 4)*8;
+    len = pow(10, 4)*8;
 
-    // t1 = high_resolution_clock::now();
-    // createRandomIntDataFile(len);
-    // t2 = high_resolution_clock::now();
+    t1 = high_resolution_clock::now();
+    createRandomIntDataFile(len);
+    t2 = high_resolution_clock::now();
 
-    // tempo = (t2 - t1);
+    tempo = (t2 - t1);
 
-    // cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
+    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
-    // len = pow(10, 5)*1.8;
+    len = pow(10, 5)*1.8;
 
-    // t1 = high_resolution_clock::now();
-    // createRandomIntDataFile(len);
-    // t2 = high_resolution_clock::now();
+    t1 = high_resolution_clock::now();
+    createRandomIntDataFile(len);
+    t2 = high_resolution_clock::now();
 
-    // tempo = (t2 - t1);
+    tempo = (t2 - t1);
 
-    // cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
-
-    createRandomTeste();
+    cout<<len<<" números aleatórios criados em "<<tempo.count()<<"s\n";
 
     return 0;
 }

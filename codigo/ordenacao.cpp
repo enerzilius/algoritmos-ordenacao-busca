@@ -92,7 +92,6 @@ vector<int> optimizedSelectionSort(vector<int> data, unsigned long* comps, unsig
             }
         }
 
-        // shifting the min.
         swap(sortedData[i], sortedData[iMin]);
 
         if (sortedData[iMin] == max) 

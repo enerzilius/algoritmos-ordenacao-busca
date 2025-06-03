@@ -156,14 +156,15 @@ vector<int> insertionSort(vector<int> data, unsigned long* comps, unsigned long*
         j = i-1;
         *comps += 1;
         while(j >= 0 && sortedData[j] > n){
-            *switches += 1/3;
+            *switches += 1;
             sortedData[j+1] = sortedData[j];
             index = j;
             j--;
         }
-        *switches += 1/3;
+        *switches += 1;
         sortedData[index] = n;
     }
+    *switches = *switches/3;
     return sortedData;
 }
 

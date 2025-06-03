@@ -77,42 +77,44 @@ vector<int> selectionSort(vector<int> data, unsigned long* comps, unsigned long*
 vector<int> optimizedSelectionSort(vector<int> data, unsigned long* comps, unsigned long* switches){
     vector<int> sortedData = data;
     int iMin = 0;
-    int iMax = 0;
+    bool sorted = true;
 
-    for (int i = 0, j = sortedData.size(); i < j; i++, j--) {
-        int min = sortedData[i], max = sortedData[i];
-        iMin = i, iMax = i;
-        for (int k = i; k <= j; k++)  {
-            if (sortedData[k] > max) {
-                max = sortedData[k];
-                iMax = k;
-            } else if (sortedData[k] < min) {
-                min = sortedData[k];
-                iMax = k;
-            }
+    for (int i = 0; i < sortedData.size(); i++)
+    {
+        iMin = i;
+        sorted = true;
+        for(int j = i; j < sortedData.size(); j++){
+            *comps += 1;
+            if((sortedData[j] > sortedData[j+1] || sortedData[j] < sortedData[j-1]) && j != 0) sorted = false;
         }
+        *comps += 1;
+        if(sorted) break;
 
+        for (int j = i; j < sortedData.size(); j++)
+        {
+            *comps += 1;
+            if(sortedData[j] < sortedData[iMin]){
+                iMin = j;
+            } 
+        }
+        if(iMin == i) break;
         swap(sortedData[i], sortedData[iMin]);
-
-        if (sortedData[iMin] == max) 
-            swap(sortedData[j], sortedData[iMin]);
-        else
-            swap(sortedData[j], sortedData[iMax]);
+        *switches += 1;
     }
+
     return sortedData;
 }
 
 vector<int> bubbleSort(vector<int> data, unsigned long* comps, unsigned long* switches){
     vector<int> sortedData = data;
 
-    for(int i = 0; i < sortedData.size(); i++){
-        *comps += 1;
-        for (int j = 0; j < sortedData.size()-i; j++)
+    for(int i = 0; i < sortedData.size(); ++i){
+        for (int j = 0; j < sortedData.size()-i-1; j++)
         {   
             *comps += 1;
             if(sortedData[j] > sortedData[j+1]){
-                swap(sortedData[j], sortedData[j+1]);
                 *switches += 1;
+                swap(sortedData[j], sortedData[j+1]);
             } 
         }
     }
@@ -127,7 +129,7 @@ vector<int> optimizedBubbleSort(vector<int> data, unsigned long* comps, unsigned
     for(int i = 0; i < sortedData.size(); i++){
         switched = false;
 
-        for (int j = 0; j < sortedData.size()-i; j++)
+        for (int j = 0; j < sortedData.size()-i-1; j++)
         {   
             *comps += 1;
             if(sortedData[j] > sortedData[j+1]){
@@ -136,7 +138,6 @@ vector<int> optimizedBubbleSort(vector<int> data, unsigned long* comps, unsigned
                 switched = true;
             } 
         }
-
         if(!switched) break;
     }
 
@@ -156,11 +157,11 @@ vector<int> insertionSort(vector<int> data, unsigned long* comps, unsigned long*
         *comps += 1;
         while(j >= 0 && sortedData[j] > n){
             *comps += 1;
-            *switches += 1;
             sortedData[j+1] = sortedData[j];
             index = j;
             j--;
         }
+        *switches += 1;
         sortedData[index] = n;
     }
     return sortedData;

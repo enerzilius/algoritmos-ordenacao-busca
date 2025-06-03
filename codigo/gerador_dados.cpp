@@ -53,6 +53,8 @@ void createRandomIntDataFile(int len){
     file.open(path, ios::binary | ios::out);
     if(!file) return;
 
+    srand(time(0));
+
     for (int i = 0; i < len; i++)
     {
         int random = rand() % len;

@@ -83,7 +83,7 @@ vector<int> optimizedSelectionSort(vector<int> data, unsigned long* comps, unsig
     {
         iMin = i;
         sorted = true;
-        for(int j = i; j < sortedData.size(); j++){
+        for(int j = i; j < sortedData.size()-1; j++){
             *comps += 1;
             if((sortedData[j] > sortedData[j+1] || sortedData[j] < sortedData[j-1]) && j != 0) sorted = false;
         }
@@ -156,12 +156,12 @@ vector<int> insertionSort(vector<int> data, unsigned long* comps, unsigned long*
         j = i-1;
         *comps += 1;
         while(j >= 0 && sortedData[j] > n){
-            *comps += 1;
+            *switches += 1/3;
             sortedData[j+1] = sortedData[j];
             index = j;
             j--;
         }
-        *switches += 1;
+        *switches += 1/3;
         sortedData[index] = n;
     }
     return sortedData;
